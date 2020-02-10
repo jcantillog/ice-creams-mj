@@ -1,0 +1,7 @@
+{
+  "name": "ice-creams-mj-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
