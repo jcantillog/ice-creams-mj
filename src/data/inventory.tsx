@@ -1,4 +1,10 @@
-export default function() {
+export interface InventoryInterface {
+  ice_cream: { flavor: string; type: "leche" | "agua" };
+  stock: number;
+  sold: number;
+}
+
+export default function(): InventoryInterface[] {
   return [
     {
       ice_cream: {
