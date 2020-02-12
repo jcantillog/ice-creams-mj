@@ -12,24 +12,63 @@ import {
   IonTitle,
   IonToolbar,
   IonThumbnail,
-  IonBadge
+  IonBadge,
+  IonButton,
+  IonIcon,
+  IonSearchbar,
+  IonButtons
 } from "@ionic/react";
-import { book, build, colorFill, grid } from "ionicons/icons";
+import { wallet, search } from "ionicons/icons";
 import getInventory from "../../data/inventory";
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 
 const Inventory: React.FC = () => {
+  const [inventory, setInventory] = useState(getInventory());
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const searchBarRef = useRef(null);
+
+  useEffect(() => {
+    const searchBarInput = searchBarRef && searchBarRef.current;
+    if (searchBarInput) {
+      searchBarInput.setFocus();
+    }
+  }, [{...searchBarRef}]);
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inventario</IonTitle>
+          {showSearchBar ? (
+            <IonSearchbar
+              ref={searchBarRef}
+              animated
+              spellcheck
+              autocomplete="on"
+              showCancelButton="focus"
+              placeholder="Buscar paletas"
+              onIonCancel={() => setShowSearchBar(false)}
+            />
+          ) : (
+            <React.Fragment>
+              <IonTitle>Inventario</IonTitle>
+              <IonButtons slot="primary">
+                <IonButton
+                  fill="clear"
+                  onClick={() => {
+                    setShowSearchBar(true);
+                  }}
+                >
+                  <IonIcon icon={search} slot="icon-only" />
+                </IonButton>
+              </IonButtons>
+            </React.Fragment>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {getInventory().map(item => (
-          <IonCard className="welcome-card">
+        {inventory.map((item, index) => (
+          <IonCard key={index} className="welcome-card">
             <IonItem>
               <IonThumbnail slot="start">
                 <img src={`/assets/${item.ice_cream.flavor}.png`} alt="" />
@@ -39,7 +78,7 @@ const Inventory: React.FC = () => {
                 <IonCardTitle>{item.ice_cream.flavor}</IonCardTitle>
               </IonCardHeader>
               {item.stock <= 5 ? (
-                <IonBadge slot="end" color="danger">
+                <IonBadge slot="end" color="warning">
                   Por agotar
                 </IonBadge>
               ) : (
@@ -58,15 +97,27 @@ const Inventory: React.FC = () => {
                 {item.ice_cream.flavor.toLocaleLowerCase()}.
               </p>
               <IonItem>
-                {/* <IonBadge slot="start">5</IonBadge> */}
+                <IonBadge slot="start" color="dark">
+                  {item.stock < 10 ? `0${item.stock}` : item.stock}
+                </IonBadge>
                 <IonLabel>Stock</IonLabel>
                 <IonBadge slot="end" color="light">
                   $ {item.stock * 1000}
                 </IonBadge>
               </IonItem>
               <IonItem>
-                {/* <IonBadge slot="start">10</IonBadge> */}
+                <IonBadge slot="start" color="dark">
+                  {item.sold < 10 ? `0${item.sold}` : item.sold}
+                </IonBadge>
                 <IonLabel>Vendidas</IonLabel>
+                <IonButton
+                  size="small"
+                  shape="round"
+                  fill="clear"
+                  color="medium"
+                >
+                  <IonIcon icon={wallet} slot="icon-only" />
+                </IonButton>
                 <IonBadge slot="end" color="success">
                   $ {item.sold * 1000}
                 </IonBadge>
