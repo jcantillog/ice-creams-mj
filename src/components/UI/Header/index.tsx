@@ -7,8 +7,9 @@ import {
   IonTitle,
   IonButtons
 } from "@ionic/react";
-import { search } from "ionicons/icons";
+import { search, save, eye } from "ionicons/icons";
 import React, { useState, useRef, useEffect } from "react";
+import { useFirestore } from "../../../hooks/firebase";
 
 export interface HeaderProps {
   title: string;
@@ -25,6 +26,15 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const searchBarRef = useRef(null);
+  const {
+    saveTestDocument,
+    seeTestDocument,
+    seeRealTimeTestDocument
+  } = useFirestore();
+
+  useEffect(() => {
+    seeRealTimeTestDocument();
+  }, []);
 
   useEffect(() => {
     const searchBarInput = searchBarRef && searchBarRef.current;
@@ -56,6 +66,12 @@ const Header: React.FC<HeaderProps> = ({
                   <IonIcon icon={search} slot="icon-only" />
                 </IonButton>
               )}
+              <IonButton fill="clear" onClick={() => saveTestDocument({ status: "Another text!" })}>
+                <IonIcon icon={save} slot="icon-only" />
+              </IonButton>
+              <IonButton fill="clear" onClick={() => seeTestDocument()}>
+                <IonIcon icon={eye} slot="icon-only" />
+              </IonButton>
             </IonButtons>
           </React.Fragment>
         )}
