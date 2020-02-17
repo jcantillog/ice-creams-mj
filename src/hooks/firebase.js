@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 /* Firebase */
 import firebase from "firebase";
 /* Config */
 import configs from "../config/app";
 
-const initializedFirebase = firebase.initializeApp(configs.firebaseConfig);
+const initFirebase = firebase.initializeApp(configs.firebaseConfig);
 
 export function useFirestore() {
   const fireStore = firebase.firestore();
@@ -36,7 +37,37 @@ export function useFirestore() {
   };
 }
 
+export function useFirebaseUI() {
+  const firebaseAuth = firebase.auth();
+  const firebaseuiConfig = {
+    ...configs.firebaseuiConfig,
+    signInOptions: [
+      {
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+      }
+    ]
+  };
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    const unregisterAuthObserver = firebaseAuth.onAuthStateChanged(user => {
+      console.log(user);
+      setIsSignedIn(!!user);
+    });
+
+    return () => unregisterAuthObserver();
+  }, []);
+
+  return {
+    firebaseuiConfig,
+    firebaseAuth,
+    isSignedIn
+  };
+}
+
 export default {
-  initializedFirebase,
+  initFirebase,
   useFirestore
 };

@@ -1,3 +1,4 @@
+import React, { useState, useRef, useEffect } from "react";
 import {
   IonButton,
   IonIcon,
@@ -8,7 +9,7 @@ import {
   IonButtons
 } from "@ionic/react";
 import { search, save, eye } from "ionicons/icons";
-import React, { useState, useRef, useEffect } from "react";
+/* Custom hooks */
 import { useFirestore } from "../../../hooks/firebase";
 
 export interface HeaderProps {
@@ -66,7 +67,10 @@ const Header: React.FC<HeaderProps> = ({
                   <IonIcon icon={search} slot="icon-only" />
                 </IonButton>
               )}
-              <IonButton fill="clear" onClick={() => saveTestDocument({ status: "Another text!" })}>
+              <IonButton
+                fill="clear"
+                onClick={() => saveTestDocument({ status: "Another text!" })}
+              >
                 <IonIcon icon={save} slot="icon-only" />
               </IonButton>
               <IonButton fill="clear" onClick={() => seeTestDocument()}>
