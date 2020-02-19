@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 /* Firebase */
 import firebase from "firebase";
+import * as firebaseui from "firebaseui";
 /* Config */
 import configs from "../config/app";
 
@@ -41,6 +42,7 @@ export function useFirebaseUI() {
   const firebaseAuth = firebase.auth();
   const firebaseuiConfig = {
     ...configs.firebaseuiConfig,
+    credentialHelper: firebaseui.auth.CredentialHelper.NONE,
     signInOptions: [
       {
         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
