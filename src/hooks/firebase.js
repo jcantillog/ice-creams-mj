@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+/* Custom Hooks */
+import { useActions } from "./common";
+/* Redux Actions */
+import { login } from "../redux/actions/user";
 /* Firebase */
 import firebase from "firebase";
 import * as firebaseui from "firebaseui";
@@ -39,6 +44,9 @@ export function useFirestore() {
 }
 
 export function useFirebaseUI() {
+  const isSignedIn = useSelector(state => state.user.authenticated);
+  const loginAction = useActions(login);
+
   const firebaseAuth = firebase.auth();
   const firebaseuiConfig = {
     ...configs.firebaseuiConfig,
@@ -51,12 +59,9 @@ export function useFirebaseUI() {
     ]
   };
 
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
   useEffect(() => {
     const unregisterAuthObserver = firebaseAuth.onAuthStateChanged(user => {
-      console.log(user);
-      setIsSignedIn(!!user);
+      loginAction(user);
     });
 
     return () => unregisterAuthObserver();
