@@ -26,11 +26,13 @@ import "./theme/variables.css";
 /* Custom components */
 import Login from "./pages/Login";
 import Sales from "./pages/Sales";
+import Menu from "./components/UI/Menu";
 
 const App: React.FC = () => {
   const isSignedIn = useSelector((state: any) => state.user.authenticated);
   return (
     <IonApp>
+      <Menu menuId="mainMenu" />
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path="/login" component={Login} />

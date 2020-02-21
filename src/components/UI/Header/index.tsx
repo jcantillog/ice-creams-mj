@@ -6,7 +6,8 @@ import {
   IonToolbar,
   IonSearchbar,
   IonTitle,
-  IonButtons
+  IonButtons,
+  IonMenuButton
 } from "@ionic/react";
 import { search, save, eye } from "ionicons/icons";
 /* Custom hooks */
@@ -17,13 +18,15 @@ export interface HeaderProps {
   withSearchBar?: boolean;
   searchBarPlaceholder?: string;
   onSearch?: (event: CustomEvent<KeyboardEvent>) => void;
+  isMenu?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
   title,
   withSearchBar,
   searchBarPlaceholder,
-  onSearch
+  onSearch,
+  isMenu = true
 }) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const searchBarRef = useRef(null);
@@ -60,6 +63,11 @@ const Header: React.FC<HeaderProps> = ({
           />
         ) : (
           <React.Fragment>
+            {isMenu && (
+              <IonButtons slot="start">
+                <IonMenuButton />
+              </IonButtons>
+            )}
             <IonTitle>{title}</IonTitle>
             <IonButtons slot="primary">
               {withSearchBar && (
@@ -67,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({
                   <IonIcon icon={search} slot="icon-only" />
                 </IonButton>
               )}
-              <IonButton
+              {/* <IonButton
                 fill="clear"
                 onClick={() => saveTestDocument({ status: "Another text!" })}
               >
@@ -75,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({
               </IonButton>
               <IonButton fill="clear" onClick={() => seeTestDocument()}>
                 <IonIcon icon={eye} slot="icon-only" />
-              </IonButton>
+              </IonButton> */}
             </IonButtons>
           </React.Fragment>
         )}
