@@ -5,8 +5,9 @@ import { SET_USER_LOGIN, SET_USER_LOGOUT } from "../types";
  * @param {Object} data Data that was obtained from the login
  */
 export function login(data: any) {
+  const loginData = setUserProfile(data);
   return (dispatch: any) => {
-    dispatch(setUserProfile(data));
+    return dispatch(loginData);
   };
 }
 
@@ -14,8 +15,9 @@ export function login(data: any) {
  * Set the data when logout occurs
  */
 export function logout() {
+  const logoutData = setUserProfile(null);
   return (dispatch: any) => {
-    dispatch(setUserProfile(null, false));
+    return dispatch(logoutData);
   };
 }
 
@@ -23,9 +25,9 @@ export function logout() {
  * Set the user profile
  * @param {Object} userData Data that was obtained from the login
  */
-export function setUserProfile(userData: any, login: boolean = true) {
+export function setUserProfile(userData: any) {
   return {
-    type: login ? SET_USER_LOGIN : SET_USER_LOGOUT,
+    type: userData ? SET_USER_LOGIN : SET_USER_LOGOUT,
     data: userData
   };
 }

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 /* Custom Hooks */
 import { useActions } from "./common";
 /* Redux Actions */
-import { login } from "../redux/actions/user";
+import allActions from "../redux/actions";
 /* Firebase */
 import firebase from "firebase";
 import * as firebaseui from "firebaseui";
@@ -45,7 +45,7 @@ export function useFirestore() {
 
 export function useFirebaseUI() {
   const isSignedIn = useSelector(state => state.user.authenticated);
-  const loginAction = useActions(login);
+  const loginAction = useActions(allActions.userActions.login);
 
   const firebaseAuth = firebase.auth();
   const firebaseuiConfig = {
@@ -76,5 +76,6 @@ export function useFirebaseUI() {
 
 export default {
   initFirebase,
-  useFirestore
+  useFirestore,
+  useFirebaseUI
 };
