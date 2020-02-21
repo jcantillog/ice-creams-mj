@@ -26,7 +26,7 @@ const Inventory: React.FC = () => {
         <p>Welcome! You are now signed-in!</p>
         <a
           onClick={() => {
-            window.location.href = "/";
+            window.location.href = "/login";
             firebaseAuth.signOut();
           }}
         >

@@ -45,7 +45,7 @@ export function useFirestore() {
 
 export function useFirebaseUI() {
   const isSignedIn = useSelector(state => state.user.authenticated);
-  const loginAction = useActions(allActions.userActions.login);
+  const loginAction = useActions(allActions.userActions.setAuth);
 
   const firebaseAuth = firebase.auth();
   const firebaseuiConfig = {
